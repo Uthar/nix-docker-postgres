@@ -23,6 +23,7 @@ in dockerTools.buildImage {
       pkgs.bashInteractive
       pkgs.coreutils
       pkgs.findutils
+      pkgs.gnugrep
       pkgs.vim
       postgres
     ];
