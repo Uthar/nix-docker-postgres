@@ -1,0 +1,44 @@
+* nix-docker-postgres
+
+To run:
+
+1. Build and load the image
+#+begin_src sh
+  docker load < $(nix build --print-out-paths --no-link .#postgres)
+#+end_src
+
+1. Create a volume to contain the database
+#+begin_src sh
+  docker volume create postgres_data
+#+end_src
+
+2. Run a shell container with the volume mounted
+#+begin_src sh
+  docker run --rm -ti -v postgres_data:/data kaspi/postgres:15.4 bash
+#+end_src
+
+3. Run ~initdb~ to prompt for superuser password and initialize the database
+#+begin_src sh
+  initdb --pwprompt -D /data
+#+end_src
+
+4. Disable unix socket and enable listen on all addresses in ~postgresql.conf~
+#+begin_src conf
+  # /data/postgresql.conf
+  listen_addresses = '*'
+  unix_socket_directories = ''
+#+end_src
+
+5. Configure password authentication in ~pg_hba.conf~
+#+begin_src conf
+  # /data/pg_hba.conf
+  host all all all scram-sha-256
+#+end_src
+
+6. Run Postgres
+#+begin_src sh
+  docker run -p 5432:5432 -v postgres_data:/data --rm kaspi/postgres:15.4
+#+end_src
+   
+
+
