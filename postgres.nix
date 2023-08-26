@@ -25,6 +25,7 @@ in dockerTools.buildImage {
       pkgs.findutils
       pkgs.gnugrep
       pkgs.vim
+      pkgs.mg
       postgres
     ];
   };
