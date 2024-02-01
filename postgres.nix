@@ -23,6 +23,7 @@ in dockerTools.buildImage {
       pkgs.bashInteractive
       pkgs.coreutils
       pkgs.findutils
+      pkgs.gnused
       pkgs.gnugrep
       pkgs.vim
       pkgs.mg
