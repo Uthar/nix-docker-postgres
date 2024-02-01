@@ -17,7 +17,7 @@ To run:
 3. Run a shell container with the volume mounted
    
    #+begin_src sh
-     docker run --rm -ti -v postgres_data:/data kaspi/postgres:15.4 bash
+     docker run --name pg_init --rm -ti -v postgres_data:/data kaspi/postgres:15.4 bash
    #+end_src
 
 4. Run ~initdb~ to prompt for superuser password and initialize the database
@@ -27,24 +27,30 @@ To run:
    #+end_src
 
 5. Disable unix socket and enable listen on all addresses in ~postgresql.conf~
+
+   #+begin_src sh
+     emacs /docker:pg_init:/data/postgresql.conf
+   #+end_src
    
    #+begin_src conf
-     # /data/postgresql.conf
      listen_addresses = '*'
      unix_socket_directories = ''
    #+end_src
 
 6. Configure password authentication in ~pg_hba.conf~
+
+   #+begin_src sh
+     emacs /docker:pg_init:/data/pg_hba.conf
+   #+end_src
    
    #+begin_src conf
-     # /data/pg_hba.conf
      host all all all scram-sha-256
    #+end_src
 
 7. Run Postgres
    
    #+begin_src sh
-     docker run -p 5432:5432 -v postgres_data:/data --rm kaspi/postgres:15.4
+     docker run --name pg -p 5432:5432 -v postgres_data:/data --rm kaspi/postgres:15.4
    #+end_src
    
 
