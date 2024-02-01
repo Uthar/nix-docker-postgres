@@ -23,7 +23,7 @@ To run:
 4. Run ~initdb~ to prompt for superuser password and initialize the database
    
    #+begin_src sh
-     initdb --pwprompt -D /data
+     initdb -E UTF8 --pwprompt -D /data
    #+end_src
 
 5. Disable unix socket and enable listen on all addresses in ~postgresql.conf~
